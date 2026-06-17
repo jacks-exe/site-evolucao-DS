@@ -18,7 +18,7 @@
       
     }
 
-    /* --- CABEÇALHO ANIMADO COM GSAP --- */
+    /* --- CABEÇALHO ANIMADO --- */
     header {
       background-color: #333;
       color: white;
@@ -27,7 +27,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 100vh; /* Inicia com 100% da tela */
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -63,10 +63,10 @@
       font-weight: 350;
       font-style: normal;
       font-variation-settings: "slnt" 0, "CRSV" 0.5, "ELSH" 0, "ELXP" 0;
-      font-size: 4em; /* Tamanho inicial, será animado pelo GSAP */
+      font-size: 4em; 
       color: white;
       text-align: center;
-      margin: 0; /* Removido margens nativas para centralizar melhor no flexbox */
+      margin: 0; 
       padding: 0 20px;
     }
 
@@ -176,7 +176,7 @@
       height: 1px;
       background: #d3c8bd;
       margin: 20px auto;
-      width: 100%; /* Ajustado para 100% para evitar overflow horizontal */
+      width: 100%; 
       max-width: 800px;
     }
     
@@ -289,7 +289,7 @@
 
   <script>
     // ----------------------------------------------------
-    // 1. CÓDIGO DO SCROLLREVEAL (Seu código direto aqui)
+    // 1. CÓDIGO DO SCROLLREVEAL
     // ----------------------------------------------------
     window.revelar = ScrollReveal({reset: true});
 
@@ -356,7 +356,7 @@
     );
 
     // ----------------------------------------------------
-    // 3. SEUS OUTROS SCRIPTS
+    // 3. OUTROS SCRIPTS
     // ----------------------------------------------------
     function ativarFade(elemento) {
       elemento.classList.add('aparecer');
