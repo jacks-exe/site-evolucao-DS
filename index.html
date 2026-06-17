@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evolução DS</title>
+  
+  <script src="https://unpkg.com/scrollreveal"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    
+    body {
+      font-family: 'Poppins','Bitcount Grid Double', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      
+    }
+
+    /* --- CABEÇALHO ANIMADO COM GSAP --- */
+    header {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh; /* Inicia com 100% da tela */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* O Spacer fantasma para alinhar a rolagem */
+    #spacer {
+      height: 100vh;
+      width: 100%;
+    }
+    /* ---------------------------------- */
+
+    main {
+      padding: 2em;
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 1em 0;
+      width: 100%;
+    }
+
+    .h1header {
+      font-family: 'Bitcount Grid Double', Arial, sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 350;
+      font-style: normal;
+      font-variation-settings: "slnt" 0, "CRSV" 0.5, "ELSH" 0, "ELXP" 0;
+      font-size: 4em; /* Tamanho inicial, será animado pelo GSAP */
+      color: white;
+      text-align: center;
+      margin: 0; /* Removido margens nativas para centralizar melhor no flexbox */
+      padding: 0 20px;
+    }
+
+    h3 {
+      font-family: 'Bitcount Grid Double', Arial, sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 350;
+      font-style: normal;
+      font-variation-settings: "slnt" 0, "CRSV" 0.5, "ELSH" 0, "ELXP" 0;
+      font-size: 1.5em;
+      color: #492402;
+      text-align: center;
+      margin-top: 0;
+    }
+
+    h1 {
+      color: #202020;
+      text-align: center;
+    }
+
+    .p {
+      color: #202020;
+      background-color: rgb(220, 220, 220);
+      border-radius: 20px;
+      padding: 1em;
+      max-width: 90ch;
+      text-align: center;
+      margin: auto;
+    }
+
+    .sombra {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .sombra:hover {
+      box-shadow: 0 10px 12px rgba(0, 0, 0, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .image {
+      margin: 2em auto;
+      max-width: 700px;
+      height: auto;
+      display: block;
+    }
+
+    .respiro { margin-top: 140px; }
+    .respiroleve { margin-top: 40px; }
+
+    /*linha do tempo*/
+    .linha-tempo {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+    .linha-tempo::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      background-color: #492402;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -2px;
+    }
+    .evento-bloco {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .evento-bloco:nth-child(odd) { left: 0; }
+    .evento-bloco:nth-child(even) { left: 50%; }
+    
+    .marcador {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border: 4px solid #492402;
+      border-radius: 50%;
+      top: 15px;
+      right: -10px;
+      z-index: 1;
+    }
+    .evento-bloco:nth-child(even) .marcador { left: -10px; }
+    
+    .conteudo {
+      padding: 15px 20px;
+      background-color: rgb(220, 220, 220);
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .caixa-paragrafo {
+      color: #202020;
+      text-align: justify;
+      font-size: 0.95em;
+      line-height: 1.6;
+      margin: 0;
+    }
+    
+    hr.personalizada {
+      border: 0; 
+      height: 1px;
+      background: #d3c8bd;
+      margin: 20px auto;
+      width: 100%; /* Ajustado para 100% para evitar overflow horizontal */
+      max-width: 800px;
+    }
+    
+    .titulolinha {
+      font-family: 'Bitcount Grid Double', Arial, sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 350;
+      font-style: normal;
+      font-variation-settings: "slnt" 0, "CRSV" 0.5, "ELSH" 0, "ELXP" 0;
+      font-size: 3em;
+      color: #202020;
+      background-color: rgb(220, 220, 220);
+      border-radius: 20px;
+      padding: 1em;
+      max-width: 15ch;
+      text-align: center;
+      margin: auto;
+    }
+    
+    .efto-txt-topo, .image, .evento-bloco {
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 class="h1header">A Evolução do Desenvolvimento de Sistemas</h1>
+  </header>
+
+  <div id="spacer"></div>
+
+  <div>
+    <div class="efto-txt-topo">
+      <h1>O que é Desenvolvimento de Sistemas?</h1>
+      <p class="sombra p">Ele é o processo estruturado de criação, alteração ou substituição de softwares e sistemas computacionais para resolver problemas ou atender a necessidades específicas. Ele engloba todas as etapas, desde o levantamento inicial de requisitos e design até a codificação, testes, implantação e manutenção contínua.</p>
+    </div>
+  </div>
+
+  <div>
+    <img src="https://portal.unit.br/wp-content/uploads/2023/11/7088807-1024x731.jpg" alt="Software icon" class="image">
+  </div>
+
+  <div class="efto-txt-topo">
+    <h1>Como o Desenvolvimento de Sistemas Evoluiu?</h1>
+    <p class="sombra p">O desenvolvimento de sistemas evoluiu significativamente ao longo do tempo, passando por várias fases e metodologias. Inicialmente, os sistemas eram desenvolvidos de forma ad-hoc, sem processos definidos, o que resultava em projetos desorganizados e propensos a falhas. Com o tempo, surgiram metodologias como o modelo em cascata, que introduziu uma abordagem sequencial para o desenvolvimento. Posteriormente, metodologias ágeis, como Scrum e Kanban, ganharam popularidade por sua flexibilidade e foco na colaboração. Além disso, a evolução tecnológica trouxe novas ferramentas e linguagens de programação, facilitando o desenvolvimento de sistemas mais complexos e eficientes.</p>
+  </div>
+
+  <div class="respiroleve"></div>
+  <hr class="personalizada">
+  <div class="respiroleve"></div>
+
+  <div>
+    <p class="titulolinha sombra">Linha do Tempo</p>
+  </div>
+
+  <div class="linha-tempo">
+    <div class="evento-bloco">
+      <div class="marcador"></div>
+        <div class="conteudo">
+          <h3>Anos 1940: O Início de uma Revolução</h3>
+          <p class="caixa-paragrafo">A história do desenvolvimento de sistemas começa com os primórdios da computação. Na década de 1940, surgiram os primeiros computadores, operando com válvulas e cartões perfurados. Programar, naquela época, era um trabalho manual e extremamente básico.<br>Pouco depois, novas abordagens começaram a surgir. A segunda geração de computadores, baseada em transistores, marcou um avanço nas linguagens de programação e no desenvolvimento de compiladores.</p>
+        </div>
+    </div>
+  
+    <div class="evento-bloco">
+      <div class="marcador"></div>
+        <div class="conteudo">
+          <h3>Anos 1970: Microprocessadores e Linguagens de Alto Nível</h3>
+          <p class="caixa-paragrafo">Nos anos 70, os microprocessadores mudaram o jogo. Eles permitiram o surgimento das linguagens de programação de alto nível, tornando o trabalho dos programadores mais ágil e possibilitando sistemas mais complexos. Um exemplo icônico é a linguagem C, criada em 1972 por Dennis Ritchie, na AT&T Bell Labs, para desenvolver o sistema operacional Unix.<br>Na década seguinte, os computadores pessoais chegaram ao mercado, impulsionando o desenvolvimento de sistemas e tornando as interfaces gráficas — como o Windows — muito mais acessíveis aos usuários comuns.</p>
+        </div>
+    </div>
+
+    <div class="evento-bloco">
+      <div class="marcador"></div>
+        <div class="conteudo">
+          <h3>Anos 1990: O Boom da Internet</h3>
+          <p class="caixa-paragrafo">Nos anos 90, a internet deu um salto gigantesco. O desenvolvimento de apps e linguagens emblemáticas, como HTML e JavaScript, abriu caminho para uma nova era digital. Ao mesmo tempo, navegadores como Mosaic, Netscape e Internet Explorer transformaram a navegação online em algo muito mais amigável. Aplicativos de e-mail (Eudora) e mensageiros instantâneos (ICQ) também começaram a ganhar espaço, revolucionando a comunicação online.</p>
+        </div>
+    </div>
+
+    <div class="evento-bloco">
+      <div class="marcador"></div>
+        <div class="conteudo">
+          <h3>Anos 2000: Smartphones, Cloud e Frameworks</h3>
+          <p class="caixa-paragrafo">Com a chegada do novo milênio, a revolução acelerou. Surgiram os smartphones, os aplicativos móveis e diversos frameworks, como Swift (iOS) e Kotlin (Android). A computação em nuvem, por sua vez, começou a ganhar forma, fornecendo recursos de armazenamento e processamento sob demanda e transformando a forma como softwares são desenvolvidos, distribuídos e consumidos.</p>
+        </div>
+    </div>
+
+    <div class="evento-bloco">
+      <div class="marcador"></div>
+        <div class="conteudo">
+          <h3>Anos 2020: IA e Machine Learning no Centro das Inovações</h3>
+          <p class="caixa-paragrafo">A Inteligência Artificial e o Machine Learning já vinham avançando desde os anos 2010, mas foi na década de 2020 que sua adoção se tornou massiva. Modelos avançados, como GPT-3 e GPT-4, começaram a automatizar processos, reduzir falhas e aumentar a eficiência dos sistemas.<br>Hoje, ferramentas baseadas em IA ajudam desenvolvedores a escrever código mais rápido, encontrar bugs e otimizar desempenho. Ao mesmo tempo, algoritmos de Machine Learning personalizam experiências em streaming, e-commerce e redes sociais, enquanto assistentes virtuais e chatbots aprimoram a interação com os usuários.</p>
+        </div>
+    </div>
+  </div>
+
+  <div class="respiro"></div>
+
+  <footer>
+    <p>© 2026 Jackson Gavloski</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    // ----------------------------------------------------
+    // 1. CÓDIGO DO SCROLLREVEAL (Seu código direto aqui)
+    // ----------------------------------------------------
+    window.revelar = ScrollReveal({reset: true});
+
+    revelar.reveal('.efto-txt-topo', {
+        delay: 0, 
+        duration: 1500, 
+        distance: '-20px', 
+        origin: 'top', 
+        opacity: 0, 
+        easing: 'ease-in-out',
+        reset: false
+    });
+
+    revelar.reveal('.image', {
+        delay: 500, 
+        duration: 1500, 
+        distance: '-20px', 
+        origin: 'top', 
+        opacity: 0, 
+        easing: 'ease-in-out',
+        reset: false
+    });
+
+    revelar.reveal('.evento-bloco', {
+        delay: 200, 
+        duration: 2000, 
+        distance: '-90px', 
+        origin: 'top', 
+        opacity: 0, 
+        easing: 'ease-in-out',
+        reset: false
+    });
+
+    // ----------------------------------------------------
+    // 2. CÓDIGO DO CABEÇALHO (GSAP)
+    // ----------------------------------------------------
+    gsap.registerPlugin(ScrollTrigger);
+
+    const alturaFinalHeader = 90;
+
+    gsap.to("header", {
+        height: `${alturaFinalHeader}px`,
+        scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: () => `+=${window.innerHeight - alturaFinalHeader}`,
+            scrub: 1,
+            invalidateOnRefresh: true
+        }
+    });
+
+    gsap.fromTo(".h1header", 
+        { fontSize: "4em" },
+        {
+            fontSize: "1.5em",
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: () => `+=${window.innerHeight - alturaFinalHeader}`,
+                scrub: 1,
+                invalidateOnRefresh: true
+            }
+        }
+    );
+
+    // ----------------------------------------------------
+    // 3. SEUS OUTROS SCRIPTS
+    // ----------------------------------------------------
+    function ativarFade(elemento) {
+      elemento.classList.add('aparecer');
+    }
+
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+  </script>
+
+</body>
+</html>
